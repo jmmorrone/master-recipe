@@ -1,0 +1,29 @@
+{
+  "name": "master-recipe",
+  "version": "0.0.1",
+  "description": "Upload the perfect recipe or find that one you keep forgetting how much flour it takes to make",
+  "main": "src/server.js",
+  "repository": "git+https://github.com/jmmorrone/master-recipe.git",
+  "dependencies": {
+    "lodash": "^4.17.10",
+    "express": "^4.16.3",
+    "auth0": "^2.11.0",
+    "react": "^16.4.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-config-airbnb-base": "^13.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.9.1"
+  },
+  "devEngines": {
+    "node": "8.11.3"
+  },
+  "engines": {
+    "node": "8.11.3"
+  },
+  "author": "Juan Martin Morrone",
+  "license": "ISC"
+}
