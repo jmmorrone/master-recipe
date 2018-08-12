@@ -4,31 +4,30 @@
   "description": "Upload the perfect recipe or find that one you keep forgetting how much flour it takes to make",
   "main": "src/server.js",
   "repository": "git+https://github.com/jmmorrone/master-recipe.git",
+  "scripts": {
+    "start": "node src/server.js"
+  },
   "dependencies": {
     "@auth0/styleguide-components": "^2.0.4",
     "@auth0/styleguide-core": "^2.0.6",
-    "@auth0/styleguide-react-components": "^1.0.3",
     "auth0": "^2.11.0",
+    "body-parser": "^1.18.3",
+    "connect-ensure-login": "^0.1.1",
+    "dotenv": "^6.0.0",
     "express": "^4.16.3",
+    "express-session": "^1.15.6",
     "lodash": "^4.17.10",
-    "react": "^15.6.2",
-    "react-bootstrap": "^0.30.10",
-    "react-dom": "^15.6.2"
+    "morgan": "^1.9.0",
+    "passport": "^0.4.0",
+    "passport-auth0": "^1.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
     "eslint-plugin-react": "^7.10.0"
-  },
-  "babel": {
-    "presets": [
-      "env"
-    ]
   },
   "devEngines": {
     "node": "8.11.3"
