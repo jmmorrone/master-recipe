@@ -8,14 +8,21 @@ const router = express.Router();
 router.get('/login',
   passport.authenticate('auth0', { scope: 'openid email profile' }), (req, res) => res.redirect('/'));
 
+// Perform session logout and redirect to homepage
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
 // Perform the final stage of authentication and redirect to '/user'
 router.get('/callback',
-  passport.authenticate('auth0', { failureRedirect: '/login' }), (req, res) => {
-    if (!req.user) {
-      throw new Error('User is null');
-    }
-    res.redirect('/user');
-  });
+  passport.authenticate('auth0', { failureRedirect: '/failure' }), (req, res) => res.redirect(req.session.returnTo || '/user'));
+
+// If login fails, redirect here
+router.get('/failure', (req, res) => {
+  req.logout();
+  res.render('failure');
+});
 
 /* GET user profile. */
 router.get('/user', ensureLoggedIn, (req, res) => {
@@ -23,12 +30,6 @@ router.get('/user', ensureLoggedIn, (req, res) => {
     user: req.user,
     userProfile: JSON.stringify(req.user, null, '  '),
   });
-});
-
-// Perform session logout and redirect to homepage
-router.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/');
 });
 
 module.exports = router;
