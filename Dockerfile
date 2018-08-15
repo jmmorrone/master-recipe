@@ -1,10 +1,11 @@
-FROM node:8
+FROM node:latest
 
-WORKDIR /home/app
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-ADD package.json /home/app
+COPY package.json /usr/src/app/
 RUN npm install
-ADD . /home/app
+COPY . /usr/src/app
 
 CMD ["npm", "start"]
 
