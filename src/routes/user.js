@@ -27,10 +27,7 @@ router.get('/callback',
 /**
  * If login fails, redirect here.
  */
-router.get('/failure', (req, res) => {
-  req.logout();
-  res.render('failure');
-});
+router.get('/failure', req => req.logout());
 
 /**
  * GET user profile.

@@ -1,11 +1,11 @@
 const { Schema } = require('mongoose');
-const instruction = require('./instruction');
 
 const recipe = new Schema({
   title: { type: String, index: true, required: true },
   ingredients: { type: [String] },
-  instructions: { type: [instruction], default: [] },
+  instructions: [{ text: String, image: [String] }],
   author: { type: String, index: true, required: true },
+  createdOn: { type: Date, required: true, default: Date.now },
 });
 
 module.exports = recipe;
