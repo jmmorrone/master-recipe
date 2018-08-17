@@ -1,28 +1,35 @@
 {
   "name": "master-recipe",
-  "version": "0.0.1",
+  "version": "0.0.7",
   "description": "Upload the perfect recipe or find that one you keep forgetting how much flour it takes to make",
   "main": "src/bin/www",
   "repository": "git+https://github.com/jmmorrone/master-recipe.git",
   "scripts": {
     "start": "node ./src/server/bin/www",
-    "webpack": "./node_modules/.bin/webpack -w"
+    "webpack": "./node_modules/.bin/webpack -w --mode=development"
   },
   "dependencies": {
-    "@auth0/styleguide-react-components": "^1.0.3",
+    "auth0-js": "^9.7.3",
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
-    "connect-ensure-login": "^0.1.1",
+    "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
+    "express-jwt": "^5.3.1",
     "express-session": "^1.15.6",
+    "history": "^4.7.2",
+    "jwks-rsa": "^1.3.0",
+    "jwt-decode": "^2.2.0",
     "lodash": "^4.17.10",
     "mongoose": "^5.2.7",
     "morgan": "^1.9.0",
     "passport": "^0.4.0",
     "passport-auth0": "^1.0.0",
-    "react": "^15.6.2",
-    "react-bootstrap": "^0.30.10",
-    "react-dom": "^15.6.1"
+    "react": "^16.4.2",
+    "react-bootstrap": "^0.32.1",
+    "react-dom": "^16.4.2",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
     "babel": "^6.23.0",

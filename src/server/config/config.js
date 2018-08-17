@@ -21,6 +21,7 @@ CONFIG.domain = process.env.AUTH0_DOMAIN || 'domain';
 CONFIG.clientID = process.env.AUTH0_CLIENT_ID || 'clientId';
 CONFIG.clientSecret = process.env.AUTH0_CLIENT_SECRET || 'secret';
 CONFIG.callbackURL = process.env.AUTH0_CALLBACK_URL || 'http://localhost:3000/callback';
+CONFIG.audience = process.env.AUDIENCE || 'audience';
 
 CONFIG.session_secret = process.env.SESSION_SECRET || 'secret';
 
