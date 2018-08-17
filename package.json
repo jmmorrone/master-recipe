@@ -6,7 +6,8 @@
   "repository": "git+https://github.com/jmmorrone/master-recipe.git",
   "scripts": {
     "start": "node ./src/server/bin/www",
-    "webpack": "./node_modules/.bin/webpack -w --mode=development"
+    "webpack": "./node_modules/.bin/webpack -w",
+    "webapp": "npm start && npm run webpack"
   },
   "dependencies": {
     "auth0-js": "^9.7.3",
