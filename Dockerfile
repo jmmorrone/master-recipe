@@ -7,6 +7,6 @@ COPY package.json /usr/src/app/
 RUN npm install
 COPY . /usr/src/app
 
-CMD ["npm", "webapp"]
+CMD ["npm", "run webapp"]
 
 EXPOSE 3000
