@@ -1,14 +1,14 @@
 const _ = require('lodash');
 const express = require('express');
-const ensureLoggedIn = require('../authCheck');
-const { Recipe } = require('../models/db');
+const Recipe = require('../models/recipe');
+const checkJwt = require('../authCheck');
 
 const router = express.Router();
 
 /**
  * Create Recipe
  */
-router.post('/api/recipes', ensureLoggedIn, async (req, res) => {
+router.post('/recipes', checkJwt, async (req, res) => {
   try {
     const body = _.get(req, 'body', null);
     const author = _.get(req, 'user.displayName', null);
@@ -18,7 +18,7 @@ router.post('/api/recipes', ensureLoggedIn, async (req, res) => {
     const recipe = new Recipe(body);
     const result = await recipe.save();
 
-    res.set('Location', `/api/recipes/${result.id}`);
+    res.set('Location', `/recipes/${result.id}`);
     return res.status(201).send(result);
   } catch (err) {
     return res.status(500).send(err);
@@ -28,7 +28,7 @@ router.post('/api/recipes', ensureLoggedIn, async (req, res) => {
 /**
  * Read Recipe
  */
-router.get('/api/recipes/:id', async (req, res) => {
+router.get('/recipes/:id', checkJwt, async (req, res) => {
   try {
     const id = _.get(req, 'params.id', null);
     if (!id) return res.status(500).send({ error: 'Cannot GET recipe' });
@@ -44,7 +44,7 @@ router.get('/api/recipes/:id', async (req, res) => {
 /**
  * Update Recipe
  */
-router.put('/api/recipes/:id', ensureLoggedIn, async (req, res) => {
+router.put('/recipes/:id', checkJwt, async (req, res) => {
   try {
     const id = _.get(req, 'params.id', null);
     const body = _.get(req, 'body', null);
@@ -62,7 +62,7 @@ router.put('/api/recipes/:id', ensureLoggedIn, async (req, res) => {
 /**
  * Delete Recipe
  */
-router.delete('/api/recipes/:id', ensureLoggedIn, async (req, res) => {
+router.delete('/recipes/:id', checkJwt, async (req, res) => {
   try {
     const id = _.get(req, 'params.id', null);
     if (!id) return res.status(500).send({ error: 'Cannot GET recipe' });
@@ -79,7 +79,7 @@ router.delete('/api/recipes/:id', ensureLoggedIn, async (req, res) => {
 /**
  * All recipes
  */
-router.get('/api/recipes', async (req, res) => {
+router.get('/recipes', async (req, res) => {
   try {
     const result = await Recipe.find().exec();
     if (!result) return res.status(404).send({ error: 'Cannot GET recipes' });
@@ -93,7 +93,7 @@ router.get('/api/recipes', async (req, res) => {
 /**
  * Search recipes
  */
-router.get('/api/search', async (req, res) => {
+router.get('/search', async (req, res) => {
   try {
     const queryParams = _.get(req, 'query', '');
 

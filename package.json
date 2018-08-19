@@ -1,58 +1,33 @@
 {
   "name": "master-recipe",
-  "version": "0.0.7",
+  "version": "1.0.0",
   "description": "Upload the perfect recipe or find that one you keep forgetting how much flour it takes to make",
-  "main": "src/bin/www",
   "repository": "git+https://github.com/jmmorrone/master-recipe.git",
   "scripts": {
-    "start": "node ./src/server/bin/www",
-    "webpack": "./node_modules/.bin/webpack -w",
-    "webapp": "npm start && npm run webpack"
+    "start": "npm-run-all --parallel server:start client:start",
+    "client:start": "react-scripts start",
+    "server:start": "node server/server.js",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
   },
   "dependencies": {
-    "auth0-js": "^9.7.3",
-    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
     "express-jwt": "^5.3.1",
-    "express-session": "^1.15.6",
-    "history": "^4.7.2",
+    "express-jwt-authz": "^1.0.0",
     "jwks-rsa": "^1.3.0",
-    "jwt-decode": "^2.2.0",
     "lodash": "^4.17.10",
-    "mongoose": "^5.2.7",
+    "mongoose": "^5.2.9",
     "morgan": "^1.9.0",
-    "passport": "^0.4.0",
-    "passport-auth0": "^1.0.0",
-    "react": "^16.4.2",
-    "react-bootstrap": "^0.32.1",
-    "react-dom": "^16.4.2",
-    "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1"
+    "npm-run-all": "^4.1.3",
+    "winston": "^3.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.24.1",
     "eslint": "^4.19.1",
-    "eslint-config-airbnb": "^17.0.0",
-    "eslint-config-airbnb-base": "^13.0.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-react": "^7.10.0",
-    "webpack": "^4.16.5",
-    "webpack-cli": "^3.1.0"
-  },
-  "devEngines": {
-    "node": "8.11.3"
-  },
-  "engines": {
-    "node": "8.11.3"
+    "eslint-config-airbnb-base": "^13.1.0"
   },
   "author": "Juan Martin Morrone",
   "license": "ISC"

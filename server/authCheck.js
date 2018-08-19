@@ -7,10 +7,10 @@ const authCheck = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `${CONFIG.domain}/.well-known/jwks.json`,
+    jwksUri: `https://${CONFIG.domain}/.well-known/jwks.json`,
   }),
   audience: CONFIG.audience,
-  issuer: CONFIG.domain,
+  issuer: `https://${CONFIG.domain}`,
   algorithms: ['RS256'],
 });
 

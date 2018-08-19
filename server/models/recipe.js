@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const { Schema } = require('mongoose');
 
 const recipe = new Schema({
@@ -8,4 +9,4 @@ const recipe = new Schema({
   createdOn: { type: Date, required: true, default: Date.now },
 });
 
-module.exports = recipe;
+module.exports = mongoose.model('Recipe', recipe);
