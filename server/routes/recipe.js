@@ -1,17 +1,17 @@
 const _ = require('lodash');
 const express = require('express');
 const Recipe = require('../models/recipe');
-const checkJwt = require('../authCheck');
 
 const router = express.Router();
 
 /**
  * Create Recipe
  */
-router.post('/recipes', checkJwt, async (req, res) => {
+router.post('/recipes', async (req, res) => {
   try {
     const body = _.get(req, 'body', null);
-    const author = _.get(req, 'user.displayName', null);
+    // TODO: When auth is enabled, remove 'test'
+    const author = 'test' || _.get(req, 'user.displayName', null);
     if (!body || !author) return res.status(500).send({ error: 'Cannot POST recipe' });
 
     body.author = author;
@@ -28,7 +28,7 @@ router.post('/recipes', checkJwt, async (req, res) => {
 /**
  * Read Recipe
  */
-router.get('/recipes/:id', checkJwt, async (req, res) => {
+router.get('/recipes/:id', async (req, res) => {
   try {
     const id = _.get(req, 'params.id', null);
     if (!id) return res.status(500).send({ error: 'Cannot GET recipe' });
@@ -44,7 +44,7 @@ router.get('/recipes/:id', checkJwt, async (req, res) => {
 /**
  * Update Recipe
  */
-router.put('/recipes/:id', checkJwt, async (req, res) => {
+router.put('/recipes/:id', async (req, res) => {
   try {
     const id = _.get(req, 'params.id', null);
     const body = _.get(req, 'body', null);
@@ -62,12 +62,12 @@ router.put('/recipes/:id', checkJwt, async (req, res) => {
 /**
  * Delete Recipe
  */
-router.delete('/recipes/:id', checkJwt, async (req, res) => {
+router.delete('/recipes/:id', async (req, res) => {
   try {
     const id = _.get(req, 'params.id', null);
     if (!id) return res.status(500).send({ error: 'Cannot GET recipe' });
 
-    const result = await Recipe.findOneAndRemove(id).exec();
+    const result = await Recipe.findOneAndDelete(id);
     if (!result) return res.status(404).send({ error: 'Cannot DELETE recipe' });
 
     return res.status(204).send({ message: 'Deleted successfully' });
@@ -93,13 +93,11 @@ router.get('/recipes', async (req, res) => {
 /**
  * Search recipes
  */
-router.get('/search', async (req, res) => {
+router.post('/search', async (req, res) => {
   try {
     const queryParams = _.get(req, 'query', '');
 
     const result = await Recipe.find(queryParams).exec();
-    if (!result) return res.status(404).send({ error: 'No recipes found' });
-
     return res.status(200).send(result);
   } catch (err) {
     return res.status(500).send({ error: 'Cannot GET recipes' });

@@ -1,0 +1,209 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Master Recipe!",
+    "description": "Master Recipe! API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3001",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Recipes",
+      "description": "API for recipes in the system"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/search": {
+      "post": {
+        "tags": [
+          "Recipes"
+        ],
+        "description": "Search recipes in system",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Recipe that we want to search",
+            "schema": {
+              "type":"string"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Recipes"
+            }
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "post": {
+        "tags": [
+          "Recipes"
+        ],
+        "description": "Create new recipe in system",
+        "parameters": [
+          {
+            "name": "recipe",
+            "in": "body",
+            "description": "Recipe that we want to create",
+            "schema": {
+              "$ref": "#/definitions/Recipe"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "New recipe is created",
+            "schema": {
+              "$ref": "#/definitions/Recipe"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get all recipes in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Recipes"
+            }
+          }
+        }
+      }
+    },
+    "/recipes/{recipeId}": {
+      "parameters": [
+        {
+          "name": "recipeId",
+          "in": "path",
+          "required": true,
+          "description": "ID of recipe that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Recipes"
+        ],
+        "summary": "Get recipe with given ID",
+        "responses": {
+          "200": {
+            "description": "Recipe is found",
+            "schema": {
+              "$ref": "#/definitions/Recipe"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete recipe with given ID",
+        "tags": [
+          "Recipes"
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe is deleted",
+            "schema": {
+              "$ref": "#/definitions/Recipe"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update recipe with give ID",
+        "tags": [
+          "Recipes"
+        ],
+        "parameters": [
+          {
+            "name": "recipe",
+            "in": "body",
+            "description": "Recipe with new values of properties",
+            "schema": {
+              "$ref": "#/definitions/Recipe"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe is updated",
+            "schema": {
+              "$ref": "#/definitions/Recipe"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Recipe": {
+      "required": [
+        "title",
+        "author"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "instructions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "image": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "text": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Recipes": {
+      "type": "array",
+      "$ref": "#/definitions/Recipe"
+    }
+  }
+}

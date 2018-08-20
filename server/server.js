@@ -3,7 +3,9 @@ const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const swaggerUi = require('swagger-ui-express');
 
+const swaggerDocument = require('./swagger.json');
 const CONFIG = require('./config/config');
 const logger = require('./logger');
 const recipeRoutes = require('./routes/recipe');
@@ -25,6 +27,7 @@ mongoose.connect(url, { useNewUrlParser: true }, (err) => {
 
 // Routes
 app.use('/api', recipeRoutes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Handle error promises
 process.on('unhandledRejection', (reason) => {
