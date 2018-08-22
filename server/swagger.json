@@ -18,6 +18,7 @@
     }
   ],
   "schemes": [
+    "http",
     "https"
   ],
   "consumes": [
