@@ -1,16 +1,16 @@
 const jwt = require('express-jwt');
-const jwks = require('jwks-rsa');
+const jwksRsa = require('jwks-rsa');
 const CONFIG = require('./config/config');
 
 const authCheck = jwt({
-  secret: jwks.expressJwtSecret({
+  secret: jwksRsa.expressJwtSecret({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
     jwksUri: `https://${CONFIG.domain}/.well-known/jwks.json`,
   }),
   audience: CONFIG.audience,
-  issuer: `https://${CONFIG.domain}`,
+  issuer: `https://${CONFIG.domain}/`,
   algorithms: ['RS256'],
 });
 

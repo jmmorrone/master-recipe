@@ -5,13 +5,11 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
 
-const swaggerDocument = require('./swagger.json');
 const CONFIG = require('./config/config');
+const swaggerDocument = require('./swagger.json');
 const logger = require('./logger');
 const recipeRoutes = require('./routes/recipe');
-const userRoutes = require('./routes/user');
-const session = require('./session');
-const passport = require('./passport');
+const authCheck = require('./authCheck');
 
 // App configuration
 const app = express();
@@ -20,16 +18,6 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(session());
-app.use(passport.initialize());
-app.use(passport.session());
-app.use((req, res, next) => {
-  res.locals.loggedIn = false;
-  if (req.session.passport && typeof req.session.passport.user !== 'undefined') {
-    res.locals.loggedIn = true;
-  }
-  next();
-});
 
 // Connection URL
 const url = `mongodb://${CONFIG.db_user}:${CONFIG.db_password}@ds227332.mlab.com:${CONFIG.db_port}/${CONFIG.db_name}`;
@@ -44,9 +32,8 @@ if (CONFIG.app === 'dev') {
 }
 
 // Routes
-app.use(userRoutes);
-app.use('/api', recipeRoutes);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api', authCheck, recipeRoutes);
+app.use('/api-docs', authCheck, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Handle error promises
 process.on('unhandledRejection', (reason) => {
