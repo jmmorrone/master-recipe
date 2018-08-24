@@ -1,13 +1,14 @@
 const _ = require('lodash');
 const express = require('express');
 const Recipe = require('../models/recipe');
+const { authCheck } = require('../auth');
 
 const router = express.Router();
 
 /**
  * Create Recipe
  */
-router.post('/recipes', async (req, res) => {
+router.post('/recipes', authCheck, async (req, res) => {
   try {
     const body = _.get(req, 'body', null);
     // TODO: When auth is enabled, remove 'test'
@@ -28,7 +29,7 @@ router.post('/recipes', async (req, res) => {
 /**
  * Read Recipe
  */
-router.get('/recipes/:id', async (req, res) => {
+router.get('/recipes/:id', authCheck, async (req, res) => {
   try {
     const id = _.get(req, 'params.id', null);
     if (!id) return res.status(500).send({ error: 'Cannot GET recipe' });
@@ -44,7 +45,7 @@ router.get('/recipes/:id', async (req, res) => {
 /**
  * Update Recipe
  */
-router.put('/recipes/:id', async (req, res) => {
+router.put('/recipes/:id', authCheck, async (req, res) => {
   try {
     const id = _.get(req, 'params.id', null);
     const body = _.get(req, 'body', null);
@@ -62,7 +63,7 @@ router.put('/recipes/:id', async (req, res) => {
 /**
  * Delete Recipe
  */
-router.delete('/recipes/:id', async (req, res) => {
+router.delete('/recipes/:id', authCheck, async (req, res) => {
   try {
     const id = _.get(req, 'params.id', null);
     if (!id) return res.status(500).send({ error: 'Cannot GET recipe' });
@@ -79,7 +80,7 @@ router.delete('/recipes/:id', async (req, res) => {
 /**
  * All recipes
  */
-router.get('/recipes', async (req, res) => {
+router.get('/recipes', authCheck, async (req, res) => {
   try {
     const result = await Recipe.find().exec();
     if (!result) return res.status(404).send({ error: 'Cannot GET recipes' });
@@ -93,7 +94,7 @@ router.get('/recipes', async (req, res) => {
 /**
  * Search recipes
  */
-router.post('/search', async (req, res) => {
+router.post('/search', authCheck, async (req, res) => {
   try {
     const queryParams = _.get(req, 'query', '');
 
