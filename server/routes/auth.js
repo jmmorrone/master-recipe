@@ -27,6 +27,13 @@ router.get('/login', (req, res) => res.redirect(buildAuthorizeUrl()));
 router.get('/callback', async (req, res) => {
   const code = _.get(req, 'query.code', null);
   if (!code) return res.json({ error: _.get(req, 'query.error', 'No code') });
+  req.session.code = code;
+  return res.redirect('/auth');
+});
+
+router.get('/auth', async (req, res) => {
+  const code = _.get(req, 'session.code', null);
+  if (!code) return res.json({ error: 'No code' });
   const token = await getOAuthCode(code);
   if (!token) return { error: 'No access token' };
   return res.json({ Bearer: token });
