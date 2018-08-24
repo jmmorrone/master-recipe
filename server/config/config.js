@@ -14,13 +14,11 @@ CONFIG.db_name = process.env.DB_NAME || 'master-recipe';
 CONFIG.db_user = process.env.DB_USER || 'root';
 CONFIG.db_password = process.env.DB_PASSWORD || 'db-password';
 
-CONFIG.jwt_encryption = process.env.JWT_ENCRYPTION || 'jwt_please_change';
-CONFIG.jwt_expiration = process.env.JWT_EXPIRATION || '10000';
-CONFIG.session_secret = process.env.SESSION_SECRET || 'secret';
+CONFIG.session_secret = process.env.SESSION_SECRET;
 
 CONFIG.domain = process.env.AUTH0_DOMAIN || 'domain';
 CONFIG.clientID = process.env.AUTH0_CLIENT_ID || 'clientId';
-CONFIG.clientSecret = process.env.AUTH0_CLIENT_SECRET || 'secret';
+CONFIG.clientSecret = process.env.AUTH0_CLIENT_SECRET;
 CONFIG.audience = process.env.AUTH0_AUDIENCE || 'audience';
 CONFIG.callbackURL = process.env.AUTH0_CALLBACK_URL || 'http://localhost:3001/callback';
 
