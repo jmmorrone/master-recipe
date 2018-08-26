@@ -1,5 +1,5 @@
 const _ = require('lodash');
-const cache = require('memory-cache');
+const cache = require('../cache');
 const Recipe = require('../models/recipe');
 
 /**
@@ -8,14 +8,12 @@ const Recipe = require('../models/recipe');
 const createRecipe = async (req, res) => {
   try {
     const body = _.get(req, 'body', null);
-    // TODO: When auth is enabled, remove 'test'
-    const author = 'test' || _.get(req, 'user.displayName', null);
-    if (!body || !author) return res.status(500).send({ error: 'Cannot POST recipe' });
+    if (!body) return res.status(500).send({ error: 'Cannot POST recipe' });
 
-    body.author = author;
     const recipe = new Recipe(body);
     const result = await recipe.save();
 
+    cache.reset();
     res.set('Location', `/recipes/${result.id}`);
     return res.status(201).send(result);
   } catch (err) {
@@ -50,6 +48,7 @@ const updateRecipe = async (req, res) => {
 
     const result = await Recipe.findByIdAndUpdate(id, body);
     if (!result) return res.status(404).send({ error: 'Cannot UPDATE recipe' });
+    cache.reset();
 
     return res.status(200).send(result);
   } catch (err) {
@@ -67,6 +66,7 @@ const deleteRecipe = async (req, res) => {
 
     const result = await Recipe.findOneAndDelete(id);
     if (!result) return res.status(404).send({ error: 'Cannot DELETE recipe' });
+    cache.reset();
 
     return res.status(204).send({ message: 'Deleted successfully' });
   } catch (err) {
@@ -79,8 +79,12 @@ const deleteRecipe = async (req, res) => {
  */
 const getAllRecipes = async (req, res) => {
   try {
+    const cachedResponse = cache.get('all-recipes');
+    if (cachedResponse) return res.status(200).send(cachedResponse);
+
     const result = await Recipe.find().exec();
     if (!result) return res.status(404).send({ error: 'Cannot GET recipes' });
+    cache.set('all-recipes', JSON.stringify(result));
 
     return res.status(200).send(result);
   } catch (err) {
@@ -93,12 +97,15 @@ const getAllRecipes = async (req, res) => {
  */
 const searchRecipes = async (req, res) => {
   try {
-    const queryParams = _.get(req, 'query', '');
+    const queryParams = _.get(req, 'query.q', null);
+    if (!queryParams) return res.status(200).send([]);
+
     const cachedResponse = cache.get(queryParams);
     if (cachedResponse) return res.status(200).send(cachedResponse);
 
-    const result = await Recipe.find(queryParams).exec();
-    cache.put(queryParams, JSON.stringify(result), 3600);
+    const searchTerm = { title: new RegExp(`${queryParams}`, 'i') };
+    const result = await Recipe.find(searchTerm);
+    cache.set(queryParams, result);
 
     return res.status(200).send(result);
   } catch (err) {

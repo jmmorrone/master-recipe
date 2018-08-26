@@ -17,7 +17,7 @@ router.get('/recipes/:id', authCheck, recipe.getRecipe);
 /**
  * Update Recipe
  */
-router.put('/recipes/:id', authCheck, recipe.updateRecipe);
+router.patch('/recipes/:id', authCheck, recipe.updateRecipe);
 
 /**
  * Delete Recipe
