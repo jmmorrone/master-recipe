@@ -33,7 +33,6 @@ describe('Recipe routes', () => {
       const res = httpMocks.createResponse();
       await recipe.searchRecipes(req, res);
       const response = res._getData();
-      console.log(response);
       expect(response.length).to.equal(1);
       expect(response[0]).to.equal(testRecipe);
     });
