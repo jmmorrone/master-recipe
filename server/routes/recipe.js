@@ -1,6 +1,5 @@
-const _ = require('lodash');
 const express = require('express');
-const Recipe = require('../models/recipe');
+const recipe = require('../controllers/recipe');
 const { authCheck } = require('../auth');
 
 const router = express.Router();
@@ -8,101 +7,31 @@ const router = express.Router();
 /**
  * Create Recipe
  */
-router.post('/recipes', authCheck, async (req, res) => {
-  try {
-    const body = _.get(req, 'body', null);
-    // TODO: When auth is enabled, remove 'test'
-    const author = 'test' || _.get(req, 'user.displayName', null);
-    if (!body || !author) return res.status(500).send({ error: 'Cannot POST recipe' });
-
-    body.author = author;
-    const recipe = new Recipe(body);
-    const result = await recipe.save();
-
-    res.set('Location', `/recipes/${result.id}`);
-    return res.status(201).send(result);
-  } catch (err) {
-    return res.status(500).send(err);
-  }
-});
+router.post('/recipes', authCheck, recipe.createRecipe);
 
 /**
  * Read Recipe
  */
-router.get('/recipes/:id', authCheck, async (req, res) => {
-  try {
-    const id = _.get(req, 'params.id', null);
-    if (!id) return res.status(500).send({ error: 'Cannot GET recipe' });
-
-    const result = await Recipe.findById(id);
-
-    return res.send(result);
-  } catch (err) {
-    return res.status(404).send({ error: 'Cannot GET recipe' });
-  }
-});
+router.get('/recipes/:id', authCheck, recipe.getRecipe);
 
 /**
  * Update Recipe
  */
-router.put('/recipes/:id', authCheck, async (req, res) => {
-  try {
-    const id = _.get(req, 'params.id', null);
-    const body = _.get(req, 'body', null);
-    if (!id || !body) return res.status(500).send({ error: 'Cannot GET recipe' });
-
-    const result = await Recipe.findByIdAndUpdate(id, body);
-    if (!result) return res.status(404).send({ error: 'Cannot UPDATE recipe' });
-
-    return res.status(200).send(result);
-  } catch (err) {
-    return res.status(500).send(err);
-  }
-});
+router.patch('/recipes/:id', authCheck, recipe.updateRecipe);
 
 /**
  * Delete Recipe
  */
-router.delete('/recipes/:id', authCheck, async (req, res) => {
-  try {
-    const id = _.get(req, 'params.id', null);
-    if (!id) return res.status(500).send({ error: 'Cannot GET recipe' });
-
-    const result = await Recipe.findOneAndDelete(id);
-    if (!result) return res.status(404).send({ error: 'Cannot DELETE recipe' });
-
-    return res.status(204).send({ message: 'Deleted successfully' });
-  } catch (err) {
-    return res.status(500).send(err);
-  }
-});
+router.delete('/recipes/:id', authCheck, recipe.deleteRecipe);
 
 /**
  * All recipes
  */
-router.get('/recipes', authCheck, async (req, res) => {
-  try {
-    const result = await Recipe.find().exec();
-    if (!result) return res.status(404).send({ error: 'Cannot GET recipes' });
-
-    return res.status(200).send(result);
-  } catch (err) {
-    return res.status(500).send({ error: 'Cannot GET recipes' });
-  }
-});
+router.get('/recipes', authCheck, recipe.getAllRecipes);
 
 /**
  * Search recipes
  */
-router.post('/search', authCheck, async (req, res) => {
-  try {
-    const queryParams = _.get(req, 'query', '');
-
-    const result = await Recipe.find(queryParams).exec();
-    return res.status(200).send(result);
-  } catch (err) {
-    return res.status(500).send({ error: 'Cannot GET recipes' });
-  }
-});
+router.post('/search', authCheck, recipe.searchRecipes);
 
 module.exports = router;

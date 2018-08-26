@@ -44,4 +44,7 @@ process.on('unhandledRejection', (reason) => {
   logger.error(reason.stack || reason);
 });
 
-app.listen(CONFIG.port);
+app.listen(CONFIG.port, (err) => {
+  if (err) throw err;
+  logger.info(`> Ready on http://localhost:${CONFIG.port}`);
+});
