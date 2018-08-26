@@ -27,11 +27,11 @@ router.delete('/recipes/:id', authCheck, recipe.deleteRecipe);
 /**
  * All recipes
  */
-router.get('/recipes', authCheck, recipe.getAllRecipes);
+router.get('/recipes', recipe.getAllRecipes);
 
 /**
  * Search recipes
  */
-router.post('/search', authCheck, recipe.searchRecipes);
+router.post('/search', recipe.searchRecipes);
 
 module.exports = router;
