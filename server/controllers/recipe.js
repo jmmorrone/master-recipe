@@ -93,24 +93,38 @@ const getAllRecipes = async (req, res) => {
 };
 
 /**
- * Search recipes
+ * "Private" find method
  */
-const searchRecipes = async (req, res) => {
+const findRecipes = async (req, res, searchTerm) => {
   try {
-    const queryParams = _.get(req, 'query.q', null);
-    if (!queryParams) return res.status(200).send([]);
-
-    const cachedResponse = cache.get(queryParams);
+    const cachedResponse = cache.get(searchTerm);
     if (cachedResponse) return res.status(200).send(cachedResponse);
 
-    const searchTerm = { title: new RegExp(`${queryParams}`, 'i') };
     const result = await Recipe.find(searchTerm);
-    cache.set(queryParams, result);
+    cache.set(searchTerm, result);
 
     return res.status(200).send(result);
   } catch (err) {
     return res.status(500).send({ error: 'Cannot GET recipes' });
   }
+};
+
+/**
+ * Search recipes
+ */
+const searchRecipes = async (req, res) => {
+  const queryParams = _.get(req, 'query.q', null);
+  if (!queryParams) return res.status(200).send([]);
+  return findRecipes(req, res, { title: new RegExp(`${queryParams}`, 'i') });
+};
+
+/**
+ * User recipes
+ */
+const userRecipes = async (req, res) => {
+  const user = _.get(req, 'query.q', null);
+  if (!user) return res.status(200).send([]);
+  return findRecipes(req, res, { author: new RegExp(`${user}`, 'i') });
 };
 
 module.exports = {
@@ -120,4 +134,5 @@ module.exports = {
   deleteRecipe,
   searchRecipes,
   getAllRecipes,
+  userRecipes,
 };

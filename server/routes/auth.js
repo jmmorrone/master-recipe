@@ -36,7 +36,7 @@ router.get('/auth', async (req, res) => {
   if (!code) return res.json({ error: 'No code' });
   const token = await getOAuthCode(code);
   if (!token) return { error: 'No access token' };
-  return res.json({ Bearer: token });
+  return res.json(`Bearer ${token}`);
 });
 
 module.exports = router;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Panel, Col } from 'react-bootstrap';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 import { getAllRecipes } from '../services/recipeService';
 
 class Recipes extends Component {
@@ -22,13 +23,22 @@ class Recipes extends Component {
     const { recipes } = this.state;
     return (
       <div>
-        <ListGroup>
-          {recipes.map((recipe, index) => (
-            <ListGroupItem key={index} header={recipe.title} href={`/recipes/${recipe._id}`}>
-              by {recipe.author}
-            </ListGroupItem>
-          ))}
-        </ListGroup>
+        {recipes.map((recipe, index) => (
+          <Col sm={4} key={index}>
+            <Panel bsStyle="success">
+              <Panel.Heading>
+                <Panel.Title>
+                  <Router>
+                    <Link to={`/recipes/${recipe._id}`}>{recipe.title} by {recipe.author}</Link>
+                  </Router>
+                </Panel.Title>
+              </Panel.Heading>
+              <Panel.Body>
+                {recipe.ingredients}
+              </Panel.Body>
+            </Panel>
+          </Col>
+        ))}
       </div>
     );
   }
