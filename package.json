@@ -5,7 +5,9 @@
   "repository": "git+https://github.com/jmmorrone/master-recipe.git",
   "main": "server/server.js",
   "scripts": {
-    "start": "node server/server.js",
+    "start": "npm-run-all --parallel start:server start:client",
+    "start:server": "node server/server.js",
+    "start:client": "cd ./client && react-scripts start",
     "test-unit": "mocha ./server/test/**/*.spec.js"
   },
   "dependencies": {
@@ -33,6 +35,7 @@
     "eslint-plugin-import": "^2.14.0",
     "mocha": "^5.2.0",
     "node-mocks-http": "^1.7.0",
+    "react-scripts": "^1.1.5",
     "sinon": "^6.1.5"
   },
   "author": "Juan Martin Morrone",

@@ -34,4 +34,9 @@ router.get('/recipes', authCheck, recipe.getAllRecipes);
  */
 router.post('/search', authCheck, recipe.searchRecipes);
 
+/**
+ * User recipes
+ */
+router.post('/myrecipes', authCheck, recipe.userRecipes);
+
 module.exports = router;
